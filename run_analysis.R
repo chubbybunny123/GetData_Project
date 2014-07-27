@@ -1,4 +1,7 @@
-# You should create one R script called run_analysis.R that does the following: 
+## run_analysis.R
+
+# SCRIPT: run_analysis.R
+# Does the following: 
 # - Merges the training and the test sets to create one data set.
 # - Extracts only the measurements on the mean and standard deviation 
 # for each measurement. 
@@ -7,12 +10,26 @@
 # - Creates a second, independent tidy data set with the average of each 
 # variable for each activity and each subject. 
 
+## -- Check for the raw data directory in this dir ---------------
+## Throws an error and stops script execution if its not here.
+## Uncomment the download section to get the data from the web
 
-# setwd("D://Google Drive//ubuntu-share//coursera-getData//getData_project")
-setwd("~/Desktop/ubuntu-share/coursera-getData/getData_project")
+## DOWNLOAD: Use this section to download the raw data zip file
+# url <- paste("https://d396qusza40orc.cloudfront.net/"
+#              , "getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+#              , sep = "")
+# download.file(url, destfile = "UCI_HAR.zip")
+# unzip("UCI_HAR.zip")
 
-###############################
-## Import the data sets into R
+## CHECK FOR RAW DATA DIRECTORY
+if(!file.exists("UCI HAR Dataset")) {
+    stop("Raw data not in the working directory")
+} else {
+    print("Yay, found the folder!")
+}    
+
+
+## -- Import the data sets into R --------------------------
 
 ## First name all the data
 trainSetName <- "./UCI HAR Dataset/train/X_train.txt"
@@ -54,6 +71,7 @@ activity <- read.table(activityName, col.names = c("code", "activityName"))
 # 5    5           STANDING
 # 6    6             LAYING
 
+## -- Determine which columns of the _x data to keep --------------
 # using the raw features wording for the column names
 # but separating the sections out to determine which columns
 # to keep
@@ -74,17 +92,13 @@ features$include <- features$isSignalMean | features$isMeanOrStd
 sum(features$include)
 # 73
 includedColNames <- t(prefeatures[features$include, 2])
-#  write.table(as.character(includedColNames), file = "includedColNames.txt"
-#              , row.names = FALSE, col.names = FALSE
-#              , quote = FALSE)
 
-###############################
-## Give the measurement data (test_x and train_x) column labels
+
+## ---- Give the measurement data (test_x and train_x) column labels -----
 colnames(test) <- t(prefeatures[,2])
 colnames(train) <- t(prefeatures[,2])
 
-###############################
-## Paste the tables together
+## ---- Paste the tables together ----------------------
 test_all <- cbind(subject_test, test_y, test)
 train_all <- cbind(subject_train, train_y, train)
 
@@ -93,24 +107,18 @@ train_all <- cbind(subject_train, train_y, train)
 
 train_test <- rbind(train_all, test_all)
 
-###############################
-## Convert the activity number into text and remove the number
+## ----  Convert the activity number into text and remove the number ----
 train_test <- merge(train_test, activity, by.x="activityNum", by.y="code"
                 , all.x = TRUE, sort = FALSE)
 train_test$activityNum <- NULL
 
-
-
-##################################
-## Remove the measurement columns that are not mean
-## or std. Need to account for the two columns at the
-## beginning and end of the table that are not 
-## measurements
+## ---- Remove the measurement columns that are not mean or std ---------
+## Need to account for the two columns at the beginning and end of the 
+## table that are not measurements
 train_test_reduced <- train_test[,c(TRUE, t(features$include), TRUE)]
 
-## ==========================
-# Creates a second, independent tidy data set with the average of each 
-# variable for each activity and each subject.
+## ---- Creates a second, independent tidy data set ---------------------
+# contains the average of each variable for each activity and each subject.
 # install.packages("reshape2")
 library(reshape2)
 

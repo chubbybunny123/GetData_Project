@@ -4,9 +4,7 @@ output: html_document
 ---
 ##Coursera - Getting/Cleaning Data Course Project
 
->Instructions from the assigment:
-> <br>
-> <br>
+###Instructions from the assigment:
 > You should create one R script called run_analysis.R that does the following: 
 > <ul>
 > <li> Merges the training and the test sets to create one data set.
@@ -18,11 +16,30 @@ output: html_document
 > variable for each activity and each subject.
 > </ul>
 
-###Assumptions made:
-+ The working directory includes a copy of the UCI data archive. It has **not** been 
-uploaded to this Github repository since it is rather large (~60MB).
+###Dataset background:
+The raw data can be obtained from  
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip  
+and a description of the research project at  
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones  
+  
+Within the zip file are several explanatory files as well:  
 
-+ The order of the rows given in the "_y", "_x", and "subject_" files are the same.
++ README.txt -- A brief description of the experiments and the data files included
+in the raw data set.
+
++ features_info.txt -- This describes the features (otherwise known as
+measurements) are collected in this dataset. The many of the individual 
+measurements are broken up  into components (X,Y,Z) and given as summary 
+stats. 
+
+###Assumptions made:
+
++ The working directory includes a copy of the UCI data archive. It has 
+**not** been uploaded to this Github repository since it is rather large 
+(~60MB).
+
++ The order of the rows given in the "_y", "_x", and "subject_" files are 
+the same.
 
 + The order of the columns given in the "_x" are the same as the rows in the
 features.txt file.
@@ -31,11 +48,15 @@ features.txt file.
 same subjects, i.e. subject 10 from the train data set is the same person as
 subject 10 in the test data set.
 
-+ The features (columns) are labeled in a 3-segment fashion. We will keep the columns
-that have "Mean" in the first segment or ["mean()" or "std()"] in the third segment
++ The features (columns) are labeled in a 3-segment fashion. We will keep the
+columns that have "Mean" in the first segment or ["mean()" or "std()"] in the
+third segment
     - tBodyAcc, etc
     - -X. -Y, or -Z, or some ?angle?
-    - mean(), std(), mad(), max(), min(), etc  
+    - mean(), std(), mad(), max(), min(), etc
+
++ The tidy data set uploaded corresponds to the filtered (std and mean only) 
+and averaged set referred to in part 5 of the instructions.
   
 
 ###Raw data table construction:
@@ -55,8 +76,10 @@ that have "Mean" in the first segment or ["mean()" or "std()"] in the third segm
                    |  text using    |
                    |  activity_     |
                    |  labels.txt    |
-                   |                | 
-
-    
+                   |                |     
 ```
+
+###Output: 
+A comma-separated file of 4 columns, as described in the codebook.md, named
+tidyData.txt.
 
