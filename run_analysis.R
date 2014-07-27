@@ -127,7 +127,7 @@ tidy <- ddply(dfMelt, .(subjectNum, activityName, variable)
               , calcMean = mean(value))
 
 ## Output this data
-write.table(tidy, file = "tidyData.csv"
+write.table(tidy, file = "tidyData.txt"
             , row.names = FALSE, col.names = TRUE
             , quote = FALSE
             , sep = ",")
